@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import './utils/db.js'
 import User from './models/User.js';
+import Note from './models/Note.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use('/style', express.static('style'));
+app.use('/script', express.static('script'));
 
 app.use(cookieParser());
 
@@ -51,13 +53,19 @@ app.get('/', async (req, res) => {
     try {
         const authToken = req.cookies.authToken;
         if (!authToken) {
-            return res.render('index', { user: null });
+            return res.render('index', { user: null, notes: [] });
         }
 
         const decodedToken = jwt.verify(authToken, secretKey);
         const user = await User.findOne({ username: decodedToken.username }, 'username name email');
 
-        res.render('index', { user });
+        if (!user || !user._id) {
+            return res.render('index', { user: null, notes: [] });
+        }
+
+        const notes = await Note.find({ author: user._id }).lean();
+
+        res.render('index', { user, notes });
     } catch (err) {
         console.error(err);
         res.status(500).send('Something went wrong!');
@@ -128,6 +136,118 @@ app.post('/signin', async (req, res) => {
         res.status(500).send('Something went wrong!');
     }
 });
+
+app.post('/create-note', async (req, res) => {
+    try {
+        const authToken = req.cookies.authToken;
+        if (!authToken) {
+            res.status(401).send('Unauthorized');
+            return;
+        }
+
+        const decodedToken = jwt.verify(authToken, secretKey);
+        const user = await User.findOne({ username: decodedToken.username });
+
+        const { title, content } = req.body;
+
+        const newNote = new Note({
+            title: title,
+            content: content,
+            author: user._id
+        });
+
+        await newNote.save();
+
+        user.notes.push(newNote._id);
+        await user.save();
+
+        res.redirect('/');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong!');
+    }
+});
+
+app.get('/note/:_id', async (req, res) => {
+    try {
+        const noteId = req.params._id;
+        const note = await Note.findById(noteId);
+
+        if (!note) {
+            res.status(404).send('Note not found');
+            return;
+        }
+
+        res.render('note', { note });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong!');
+    }
+});
+
+
+app.get('/edit-note/:_id', async (req, res) => {
+    try {
+        const noteId = req.params._id;
+        const note = await Note.findById(noteId);
+
+        if (!note) {
+            res.status(404).send('Note not found');
+            return;
+        }
+
+        res.render('edit-note', { note });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong!');
+    }
+});
+
+app.post('/update-note', async (req, res) => {
+    try {
+        const { noteId, title, content } = req.body;
+        const updatedNote = await Note.findByIdAndUpdate(
+            noteId,
+            { title: title, content: content },
+            { new: true }
+        );
+
+        if (!updatedNote) {
+            res.status(404).send('Note not found');
+            return;
+        }
+
+        res.redirect('/');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong!');
+    }
+});
+
+app.post('/delete-note', async (req, res) => {
+    try {
+        const { noteId } = req.body;
+        const deletedNote = await Note.findByIdAndDelete(noteId);
+
+        if (!deletedNote) {
+            res.status(404).send('Note not found');
+            return;
+        }
+
+        const user = await User.findOne({ notes: noteId });
+
+        if (user) {
+            user.notes.pull(noteId);
+            await user.save();
+        }
+
+        res.redirect('/');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong!');
+    }
+});
+
 
 app.post('/logout', (req, res) => {
     res.clearCookie('authToken');

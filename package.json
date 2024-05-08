@@ -9,7 +9,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.4"
   },
-  "name": "authentication",
+  "name": "note-taking-app",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
