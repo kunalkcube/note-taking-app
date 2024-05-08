@@ -18,7 +18,7 @@
     "tailwindcss": "^3.4.3"
   },
   "scripts": {
-    "build": "npx tailwindcss -i ./style/input.css -o ./style/output.css --watch",
+    "css": "npx tailwindcss -i ./style/input.css -o ./style/output.css --watch",
     "start": "node index.js"
   },
   "keywords": [],
