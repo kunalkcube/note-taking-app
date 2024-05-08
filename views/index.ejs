@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication</title>
+    <link rel="stylesheet" href="/style/output.css">
+</head>
+
+<body class="bg-gray-900 text-gray-200">
+    <div class="min-h-screen flex flex-col justify-start items-center p-10">
+        <h1 class="text-3xl font-bold mb-12 text-slate-200">Authentication</h1>
+
+        <!-- Display different content based on user authentication status -->
+        <% if (user) { %>
+            <div class="mb-8 text-lg text-center">
+                <h1 class="text-2xl font-bold mb-2 text-blue-500">Welcome, <%= user.name %>!</h1>
+                <h2 class="text-xl font-semibold mb-2 text-green-500"><%= user.username %></h2>
+                <h3 class="text-xl font-medium text-gray-500"><%= user.email %></h3>
+            </div>            
+            <form action="/logout" method="POST">
+                <button type="submit" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-white font-semibold">Logout</button>
+            </form>
+        <% } else { %>
+            <div class="flex flex-row w-full max-w-lg justify-between items-center">
+                <a href="/signup" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white font-semibold">Sign Up</a>
+                <a href="/signin" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-white font-semibold">Sign In</a>
+            </div>
+        <% } %>
+    </div>
+</body>
+
+</html>

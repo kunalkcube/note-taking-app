@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Authentication</title>
+    <link rel="stylesheet" href="/style/output.css">
+</head>
+
+<body class="bg-gray-900 text-gray-200">
+    <div class="min-h-screen flex flex-col justify-start items-center p-10">
+        <h1 class="text-3xl font-bold mb-8 text-slate-200">Sign Up | Authentication</h1>
+
+        <!-- Form -->
+        <form action="/create-user" method="POST" class="w-full max-w-lg">
+            <div class="mb-6">
+                <label for="username" class="block mb-2">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Choose your username"
+                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200"
+                    required>
+            </div>
+            <div class="mb-6">
+                <label for="name" class="block mb-2">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name"
+                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200"
+                    required>
+            </div>
+            <div class="mb-6">
+                <label for="email" class="block mb-2">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email"
+                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200"
+                    required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block mb-2">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password"
+                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200"
+                    required>
+            </div>
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white font-semibold">Sign Up</button>
+        </form>
+    </div>
+</body>
+
+</html>
