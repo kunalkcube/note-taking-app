@@ -14,7 +14,7 @@
 <body class="bg-gray-900 text-gray-200">
     <div class="min-h-screen flex flex-col justify-start items-center p-10">
         <h1 class="text-3xl font-bold mb-8 text-slate-200">Edit Note</h1>
-        <form action="/update-note" method="POST" class="w-full max-w-lg">
+        <form action="/note/update" method="POST" class="w-full max-w-lg">
             <input type="hidden" name="noteId" value="<%= note._id %>">
             <div class="mb-6">
                 <label for="title" class="block mb-2">Title:</label>

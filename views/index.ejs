@@ -30,7 +30,7 @@
         </button>
 
         <!-- Form -->
-        <form id="noteForm" action="/create-note" method="POST" class="w-full max-w-lg hidden">
+        <form id="noteForm" action="/note/create" method="POST" class="w-full max-w-lg hidden">
             <div class="mb-6">
                 <label for="title" class="block mb-2">Title:</label>
                 <input type="text" id="title" name="title" placeholder="Enter title"
@@ -51,11 +51,11 @@
                 <% notes.forEach(note => { %>
                     <!-- Note Card -->
                     <div class="bg-gray-800 rounded-lg p-4">
-                        <a href="/note/<%= note._id %>" class="text-blue-500 hover:underline font-semibold truncate"><%= note.title %></a>
+                        <a href="/note/<%= note._id %>" class="text-blue-500 hover:underline font-semibold truncate line-clamp-1"><%= note.title %></a>
                         <p class="text-gray-300 mt-2 line-clamp-2"><%= note.content %></p>
                         <div class="mt-4 flex justify-between items-center">
-                            <a href="/edit-note/<%= note._id %>" class="bg-green-500 hover:bg-green-600 px-2 py-1 rounded-md text-white font-semibold"><i class="ri-edit-line"></i></a>
-                            <form action="/delete-note" method="POST">
+                            <a href="/note/edit/<%= note._id %>" class="bg-green-500 hover:bg-green-600 px-2 py-1 rounded-md text-white font-semibold"><i class="ri-edit-line"></i></a>
+                            <form action="/note/delete" method="POST">
                                 <input type="hidden" name="noteId" value="<%= note._id %>">
                                 <button type="submit" class="bg-red-500 hover:bg-red-600 px-2 py-1 rounded-md text-white font-semibold"><i class="ri-delete-bin-line"></i></button>
                             </form>                        
