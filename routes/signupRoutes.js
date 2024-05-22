@@ -6,6 +6,7 @@ import isAuthenticated from '../middleware/isAuthenticated.js';
 
 const router = express.Router();
 const secretKey = process.env.JWT_SECRET;
+const cookieMaxAge = 86400 * 30 * 1000;
 
 router.get('/', isAuthenticated, (req, res) => {
     res.render('signup');
@@ -31,8 +32,8 @@ router.post('/create-user', async (req, res, next) => {
         });
         await newUser.save();
 
-        const authToken = jwt.sign({ username: username }, secretKey);
-        res.cookie('authToken', authToken, { httpOnly: true });
+        const authToken = jwt.sign({ username: username }, secretKey, { expiresIn: '30d' });
+        res.cookie('authToken', authToken, { httpOnly: true, maxAge: cookieMaxAge });
 
         res.redirect('/');
     } catch (err) {
