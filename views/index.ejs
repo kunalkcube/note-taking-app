@@ -5,72 +5,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Note Taking App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css" integrity="sha512-OQDNdI5rpnZ0BRhhJc+btbbtnxaj+LdQFeh0V9/igiEPDiWE2fG+ZsXl0JEH+bjXKPJ3zcXqNyP4/F/NegVdZg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css"
+        integrity="sha512-OQDNdI5rpnZ0BRhhJc+btbbtnxaj+LdQFeh0V9/igiEPDiWE2fG+ZsXl0JEH+bjXKPJ3zcXqNyP4/F/NegVdZg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/style/output.css">
+    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
 </head>
 
 <body class="bg-gray-900 text-gray-200">
-    <div class="min-h-screen flex flex-col justify-start items-center p-10">
-        <h1 class="text-3xl font-bold mb-12 text-slate-200">Note Taking App</h1>
+    <nav class="bg-gray-900">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="/" class="flex items-center">
+                <span class="self-center text-2xl font-bold whitespace-nowrap">Note Taking App</span>
+            </a>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 relative">
+                <% if (user) { %>
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-2 focus:ring-blue-600"
+                    id="user-menu-button" aria-expanded="false">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="/avatar.jpg" alt="user photo">
+                </button>
+                <!-- Dropdown menu -->
+                <div class="hidden absolute top-10 right-0 w-48 bg-gray-800 rounded-md shadow-lg"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span class="block text-sm font-semibold text-slate-200 truncate"><%= user.name %></span>
+                        <span class="block text-sm text-slate-200 truncate"><%= user.email %></span>
+                    </div>
+                    <ul class="py-2">
+                        <li>
+                            <a href="/profile"
+                                class="block px-4 py-2 text-sm text-slate-200 hover:bg-blue-600">Profile</a>
+                        </li>
+                        <li>
+                            <form action="/logout" method="POST">
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-blue-600">Sign
+                                    out</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <% } else { %>
+                <a href="/signin"
+                    class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-white font-semibold">Sign
+                    In</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
 
+    <div class="min-h-screen flex flex-col justify-start items-center pt-10 pb-28 px-5">
         <!-- Display different content based on user authentication status -->
         <% if (user) { %>
-            <div class="mb-8 text-lg text-center">
-                <h1 class="text-2xl font-bold mb-2 text-blue-500">Welcome, <%= user.name %>!</h1>
-                <h2 class="text-xl font-semibold mb-2 text-green-500"><%= user.username %></h2>
-                <h3 class="text-xl font-medium text-gray-500"><%= user.email %></h3>
-            </div>            
-            <form action="/logout" method="POST">
-                <button type="submit" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-white font-semibold">Logout</button>
-            </form>
-            
-                <!-- Plus icon button -->
-        <button id="toggleFormBtn" class="fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-full text-white font-semibold flex justify-center items-center">
+        <!-- Plus icon button -->
+        <button id="toggleFormBtn"
+            class="fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-full text-white font-semibold flex justify-center items-center">
             <i class="ri-add-line text-xl"></i>
         </button>
 
         <!-- Form -->
-        <form id="noteForm" action="/note/create" method="POST" class="w-full max-w-lg hidden">
+        <form id="noteForm" action="/note/create" method="POST" class="w-full max-w-4xl hidden">
             <div class="mb-6">
                 <label for="title" class="block mb-2">Title:</label>
                 <input type="text" id="title" name="title" placeholder="Enter title"
-                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200" required>
+                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200"
+                    required>
             </div>
             <div class="mb-6">
                 <label for="content" class="block mb-2">Content:</label>
                 <textarea id="content" name="content" placeholder="Enter your note content"
-                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200 resize-none h-40" required></textarea>
+                    class="w-full px-3 py-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200 resize-none h-40"
+                    required></textarea>
             </div>
             <button type="submit"
-                class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white font-semibold">Create Note</button>
+                class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white font-semibold">Create
+                Note</button>
         </form>
 
         <h2 class="text-2xl font-bold my-8">Your Notes</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-4xl">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
             <% if(notes) { %>
-                <% notes.forEach(note => { %>
-                    <!-- Note Card -->
-                    <div class="bg-gray-800 rounded-lg p-4">
-                        <a href="/note/<%= note._id %>" class="text-blue-500 hover:underline font-semibold truncate line-clamp-1"><%= note.title %></a>
-                        <p class="text-gray-300 mt-2 line-clamp-2"><%= note.content %></p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <a href="/note/edit/<%= note._id %>" class="bg-green-500 hover:bg-green-600 px-2 py-1 rounded-md text-white font-semibold"><i class="ri-edit-line"></i></a>
-                            <form action="/note/delete" method="POST">
-                                <input type="hidden" name="noteId" value="<%= note._id %>">
-                                <button type="submit" class="bg-red-500 hover:bg-red-600 px-2 py-1 rounded-md text-white font-semibold"><i class="ri-delete-bin-line"></i></button>
-                            </form>                        
-                        </div>
-                    </div>                    
-                <% }); %>
+            <% notes.forEach(note=> { %>
+            <!-- Note Card -->
+            <div class="bg-gray-800 rounded-lg p-4">
+                <a href="/note/<%= note._id %>"
+                    class="text-blue-500 hover:underline font-semibold truncate line-clamp-1">
+                    <%= note.title %>
+                </a>
+                <p class="text-gray-300 mt-2 line-clamp-2">
+                    <%= note.content %>
+                </p>
+                <div class="mt-4 flex justify-between items-center">
+                    <a href="/note/edit/<%= note._id %>"
+                        class="bg-green-500 hover:bg-green-600 px-2 py-1 rounded-md text-white font-semibold"><i
+                            class="ri-edit-line"></i></a>
+                    <form action="/note/delete" method="POST">
+                        <input type="hidden" name="noteId" value="<%= note._id %>">
+                        <button type="submit"
+                            class="bg-red-500 hover:bg-red-600 px-2 py-1 rounded-md text-white font-semibold"><i
+                                class="ri-delete-bin-line"></i></button>
+                    </form>
+                </div>
+            </div>
+            <% }); %>
             <% } else { %>
-                <h2 class="text-2xl font-bold my-8">You have no notes</h2>
+            <h2 class="text-2xl font-bold my-8">You have no notes</h2>
             <% } %>
         </div>
         <% } else { %>
-            <div class="flex flex-row w-full max-w-lg justify-between items-center">
-                <a href="/signup" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white font-semibold">Sign Up</a>
-                <a href="/signin" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-white font-semibold">Sign In</a>
-            </div>
+            <p class="text-gray-400 font-medium text-lg">Sign in to add notes 🚀😊.</p>
         <% } %>
     </div>
 

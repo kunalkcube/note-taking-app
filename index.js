@@ -11,12 +11,14 @@ import noteRoutes from './routes/noteRoutes.js';
 import signupRoutes from './routes/signupRoutes.js';
 import signinRoutes from './routes/signinRoutes.js';
 import logoutRoute from './routes/logoutRoute.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 app.use('/style', express.static('style'));
 app.use('/script', express.static('script'));
 
@@ -54,6 +56,8 @@ app.use('/signup', signupRoutes);
 app.use('/signin', signinRoutes);
 
 app.use('/note', noteRoutes);
+
+app.use('/profile', userRoutes);
 
 app.use('/logout', logoutRoute);
 
