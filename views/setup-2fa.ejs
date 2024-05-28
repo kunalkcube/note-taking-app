@@ -12,10 +12,14 @@
 <body class="bg-gray-900 text-gray-200">
     <div class="min-h-screen flex flex-col items-center justify-center p-5">
         <h1 class="text-4xl font-bold mb-10">Setup Two-Factor Authentication</h1>
-        <div class="p-6 rounded-lg shadow-lg w-full max-w-xl">
-            <p class="mb-6 text-lg text-gray-300">Scan the QR code below with your authenticator app:</p>
+        <div class="p-6 rounded-lg w-full max-w-xl">
+            <p class="mb-6 text-lg text-gray-300">Scan the QR code below with your authenticator app or paste the secret key:</p>
             <div class="flex justify-center mb-6">
                 <img src="<%= qrCode %>" alt="QR Code" class="rounded-lg border-2 border-gray-700 shadow-lg">
+            </div>
+            <div class="mb-6">
+                <label for="secret" class="block text-sm font-medium text-gray-300 mb-2">Secret Key</label>
+                <p id="secret" class="bg-gray-700 text-gray-200 p-2 rounded-md text-center"><%= secret %></p>
             </div>
             <form action="/profile/verify-2fa" method="POST" class="space-y-6">
                 <input type="hidden" name="secret" value="<%= secret %>">
