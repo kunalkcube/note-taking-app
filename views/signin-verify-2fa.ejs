@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA Verification</title>
+    <link rel="stylesheet" href="/style/output.css">
+    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
+</head>
+
+<body class="bg-gray-900 text-gray-200">
+    <div class="min-h-screen flex flex-col items-center justify-center p-5">
+        <h1 class="text-4xl font-bold mb-10">Two-Factor Authentication</h1>
+        <div class="p-6 rounded-lg shadow-lg w-full max-w-xl">
+            <form action="/signin/signin-verify-2fa" method="POST" class="space-y-6">
+                <div>
+                    <label for="token" class="block text-sm font-medium text-gray-300 mb-2">Enter your 2FA token</label>
+                    <input type="text" name="token" id="token" placeholder="Enter 2FA token"
+                        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
+                        required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">Verify</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

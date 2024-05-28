@@ -22,8 +22,14 @@ const userSchema = mongoose.Schema({
     notes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Note"
-    }]
-
+    }],
+    twoFactorSecret: {
+        type: String
+    },
+    isTwoFactorEnabled: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const User = mongoose.model("User", userSchema);

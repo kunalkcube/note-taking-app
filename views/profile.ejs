@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,43 +7,59 @@
     <link rel="stylesheet" href="/style/output.css">
     <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
 </head>
-
 <body class="bg-gray-900 text-gray-200">
     <div class="min-h-screen flex flex-col items-center pt-10 pb-28 px-5">
-        <h1 class="text-3xl font-bold mb-8">User Profile</h1>
-        <div class="p-4 w-full max-w-xl whitespace-normal break-words">
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-300">Username</label>
-                <p class="text-lg font-bold">
-                    <%= user.username %>
-                </p>
+        <div class="w-full max-w-xl flex justify-end mb-4">
+            <a href="/" class="underline text-white font-semibold hover:text-blue-500">Home</a>
+        </div>
+        <h1 class="text-4xl font-bold mb-8">User Profile</h1>
+        <div class="p-6 w-full max-w-xl rounded-lg shadow-lg">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-100 mb-4">User Information</h2>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300">Username</label>
+                    <p class="text-lg font-bold">
+                        <%= user.username %>
+                    </p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300">Name</label>
+                    <p class="text-lg font-bold">
+                        <%= user.name %>
+                    </p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300">Email</label>
+                    <p class="text-lg font-bold">
+                        <%= user.email %>
+                    </p>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                    <a href="/profile/edit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">Update Profile</a>
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-300">Name</label>
-                <p class="text-lg font-bold">
-                    <%= user.name %>
-                </p>
+            <hr class="w-full h-1 bg-gray-700 my-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-100 mb-4">Two-Factor Authentication</h2>
+                <div class="flex justify-between items-center mt-6">
+                    <% if (!user.isTwoFactorEnabled) { %>
+                        <a href="/profile/setup-2fa" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded">Enable 2FA</a>
+                    <% } else { %>
+                        <span class="text-green-500 font-semibold">2FA Enabled</span>
+                        <form action="/profile/disable-2fa" method="POST" class="inline">
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">Disable 2FA</button>
+                        </form>
+                    <% } %>
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-300">Email</label>
-                <p class="text-lg font-bold">
-                    <%= user.email %>
-                </p>
-            </div>
-            <div class="flex justify-between items-center mt-6">
-                <a href="/profile/edit"
-                    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">Update Profile</a>
-            </div>
-            <div class="mt-32">
-                <h2 class="text-xl font-bold text-red-500">Danger Zone</h2>
-                <form action="/profile/delete" method="POST" class="mt-4">
-                    <button type="submit"
-                        class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">Delete
-                        Account</button>
+            <hr class="w-full h-1 bg-gray-700 my-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-red-500 mb-4">Danger Zone</h2>
+                <form action="/profile/delete" method="POST">
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">Delete Account</button>
                 </form>
             </div>
         </div>
     </div>
 </body>
-
 </html>
