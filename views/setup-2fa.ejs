@@ -19,7 +19,7 @@
             </div>
             <div class="mb-6">
                 <label for="secret" class="block text-sm font-medium text-gray-300 mb-2">Secret Key</label>
-                <p id="secret" class="bg-gray-700 text-gray-200 p-2 rounded-md text-center"><%= secret %></p>
+                <p id="secret" class="bg-gray-700 text-gray-200 p-2 rounded-md text-center break-words"><%= secret %></p>
             </div>
             <form action="/profile/verify-2fa" method="POST" class="space-y-6">
                 <input type="hidden" name="secret" value="<%= secret %>">
