@@ -131,7 +131,7 @@ router.post('/remove-shared-user', authorizeNote, async (req, res, next) => {
 });
 
 // Route to view shared note
-router.get('/shared/:_id', async (req, res, next) => {
+router.get('/shared/:_id', authorizeNote, async (req, res, next) => {
     try {
         const noteId = req.params._id;
         const authToken = req.cookies.authToken;

@@ -8,23 +8,27 @@ const authorizeNote = async (req, res, next) => {
     try {
         const authToken = req.cookies.authToken;
         if (!authToken) {
-            res.status(401).send('Unauthorized');
-            return;
+            return res.status(401).send('Unauthorized');
         }
 
         const decodedToken = jwt.verify(authToken, secretKey);
         const user = await User.findOne({ username: decodedToken.username });
+        if (!user) {
+            return res.status(401).send('Unauthorized');
+        }
+
         const noteId = req.params._id || req.body.noteId;
         const note = await Note.findById(noteId);
 
         if (!note) {
-            res.status(404).send('Note not found');
-            return;
+            return res.status(404).send('Note not found');
         }
 
-        if (!note.author.equals(user._id)) {
-            res.status(403).send('Forbidden');
-            return;
+        const isAuthor = note.author.equals(user._id);
+        const sharedWithUser = note.sharedWith.find(sharedUser => sharedUser.email === user.email);
+
+        if (!isAuthor && (!sharedWithUser)) {
+            return res.status(403).send('Forbidden');
         }
 
         req.note = note;
