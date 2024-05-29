@@ -14,6 +14,16 @@ const noteSchema = mongoose.Schema({
         ref: "User",
         required: true
     },
+    sharedWith: [{
+        email: {
+            type: String
+        },
+        permission: {
+            type: String,
+            enum: ['read-only', 'editable'],
+            default: 'read-only'
+        }
+    }],
     date: {
         type: Date,
         default: Date.now

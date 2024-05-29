@@ -12,6 +12,7 @@ import signupRoutes from './routes/signupRoutes.js';
 import signinRoutes from './routes/signinRoutes.js';
 import logoutRoute from './routes/logoutRoute.js';
 import userRoutes from './routes/userRoutes.js';
+import passwordResetRoutes from './routes/passwordResetRoutes.js';
 
 const app = express();
 
@@ -54,6 +55,8 @@ app.get('/', async (req, res, next) => {
 app.use('/signup', signupRoutes);
 
 app.use('/signin', signinRoutes);
+
+app.use(passwordResetRoutes);
 
 app.use('/note', noteRoutes);
 

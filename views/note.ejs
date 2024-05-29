@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +8,45 @@
     <link rel="stylesheet" href="/style/output.css">
     <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
 </head>
-
 <body class="bg-gray-900 text-gray-200">
     <div class="min-h-screen flex flex-col justify-start items-center pt-10 pb-28 px-5">
         <h1 class="text-3xl font-bold mb-8 text-slate-200">Note Details</h1>
         <div class="max-w-2xl w-full">
             <h2 class="text-xl font-semibold mb-4"><%= note.title %></h2>
-            <p class="text-gray-300"><%= note.content %></p>
+            <p class="text-gray-300 mb-8"><%= note.content %></p>
+            
+            <!-- Sharing Form -->
+            <form action="/note/share" method="POST" class="mb-4">
+                <input type="hidden" name="noteId" value="<%= note._id %>">
+                <input type="email" name="email" placeholder="Share with email" class="w-full px-3 py-2 mb-2 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200" required>
+                <select name="permission" class="w-full px-3 py-2 mb-4 bg-gray-800 rounded-md focus:outline-none focus:ring focus:ring-blue-500 text-gray-200" required>
+                    <option value="read-only">Read Only</option>
+                    <option value="editable">Editable</option>
+                </select>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">Share</button>
+            </form>
+
+            <!-- List of Shared Users -->
+            <h3 class="text-lg font-semibold mb-2">Shared With:</h3>
+            <ul class="list-disc pl-2">
+                <% note.sharedWith.forEach(user => { %>
+                    <li class="flex justify-between items-center">
+                        <span class="break-words"><%= user.email %> (<%= user.permission %>)</span>
+                        <form action="/note/remove-shared-user" method="POST" class="inline">
+                            <input type="hidden" name="noteId" value="<%= note._id %>">
+                            <input type="hidden" name="email" value="<%= user.email %>">
+                            <button type="submit" class="text-red-500 hover:text-red-700 ml-2">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+
+            <!-- Shareable Link -->
+            <h3 class="text-lg font-semibold mt-6 mb-2">Shareable Link:</h3>
+            <p class="bg-gray-800 p-3 rounded-md text-blue-400 break-words"><%= shareableLink %></p>
         </div>
     </div>
 </body>
-
 </html>
