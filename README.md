@@ -49,4 +49,4 @@ Contributions are welcome! Feel free to submit pull requests.
 
 
 ## License
-ISC
+MIT
